@@ -1,7 +1,8 @@
 package views;
 
 import static java.awt.Frame.MAXIMIZED_BOTH;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.Icon;
@@ -9,6 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import models.User;
 
 public class InstaWindow extends JFrame {
@@ -38,28 +40,69 @@ public class InstaWindow extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setExtendedState(MAXIMIZED_BOTH);
 
-        setLayout(new GridLayout(3, 3));
+        setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
 
         menuBarInsta = new MenuBarInsta(controller);
         setJMenuBar(menuBarInsta);
 
-        jlNick = new JLabel(NAME);
-        add(jlNick);
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.gridheight = 1;
+        c.weighty = 0.01;
+        for (int i = 0; i < 12; i++) {
+            c.gridx = i;
+            add(new JLabel(""), c);
+        }
+
+        c.gridy = 0;
+        c.weighty = 0.1;
+        c.gridx = 0;
+        c.gridwidth = 3;
 
         jlImage = new JLabel(new ImageIcon(getClass().getResource(DEFAULT_PIC)));
-        add(jlImage);
+        add(jlImage, c);
+
+        c.gridy = 0;
+        c.weighty = 0.1;
+        c.gridx = 3;
+        c.gridwidth = 3;
+
+        jlNick = new JLabel(NAME);
+        add(jlNick, c);
+
+        c.gridy = 1;
+        c.weighty = 0.1;
+        c.gridx = 3;
+        c.gridwidth = 2;
 
         publications = new JLabel(0 + PUBLICATIONS);
-        add(publications);
+        add(publications, c);
+
+        c.gridx = 5;
 
         followers = new JLabel(0 + FOLLOWERS);
-        add(followers);
+        add(followers, c);
+
+        c.gridx = 7;
 
         following = new JLabel(0 + FOLLOWING);
-        add(following);
+        add(following, c);
+
+        c.gridx = 9;
 
         description = new JLabel(DESCRIPTION);
-        add(description);
+        add(description, c);
+
+        c.gridy = 3;
+        c.weighty = 1;
+        c.gridx = 1;
+        c.gridwidth = 9;
+
+        JScrollPane jsp = new JScrollPane();
+        panelPhotos = new PanelPhotos(null);
+        jsp.setViewportView(panelPhotos);
+        add(jsp, c);
 
         setVisible(true);
     }
